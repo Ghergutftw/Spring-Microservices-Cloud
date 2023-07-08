@@ -1,18 +1,22 @@
 package main.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
+import org.springframework.hateoas.EntityModel;
 
 import java.time.LocalDate;
 
-public class User {
+public class User extends EntityModel<User> {
 
     private Integer id;
 
     @Size(min = 2,message = "Name should have at least 2 characters")
+    @JsonProperty("user_name")
     private String name;
 
     @Past(message = "Birthday should be in the past")
+    @JsonProperty("birth_date")
     private LocalDate birthDate;
 
     public User(Integer id, String name, LocalDate birthDate) {

@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 @Component
@@ -17,6 +18,7 @@ public class UserDaoService {
     private static Integer usersCount = 0;
 
     static {
+
         users.add(new User(++usersCount,"Adam" , LocalDate.now().minusYears(31)));
         users.add(new User(++usersCount,"Eva" , LocalDate.now().minusYears(32)));
         users.add(new User(++usersCount,"John" , LocalDate.now().minusYears(33)));

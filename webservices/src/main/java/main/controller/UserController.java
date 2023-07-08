@@ -4,6 +4,8 @@ import jakarta.validation.Valid;
 import main.entities.User;
 import main.exceptions.UserNotFoundException;
 import main.service.UserDaoService;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -25,16 +27,20 @@ public class UserController {
         return service.findAll();
     }
 
+
     @GetMapping("/users/{id}")
-    public User retrieveUserById(@PathVariable Integer id){
+    public EntityModel<User> retrieveUserById(@PathVariable Integer id){
         User user = service.findOne(id);
 
         if (user == null){
             throw new UserNotFoundException("id:" + id);
         }
 
-        return user;
+        EntityModel<User> model = EntityModel.of(user);
+        WebMvcLinkBuilder linkToUsers = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).retrieveAllUsers());
+        model.add(linkToUsers.withRel("all-users"));
 
+        return model;
     }
     @DeleteMapping("/users/{id}")
     public void deleteUserById(@PathVariable Integer id){
